@@ -246,7 +246,6 @@ DirectoryNode *get_node_at_index(DirectoryNode *current, int index, int include_
 void navigate_directory(DirectoryNode *root)
 {
     DirectoryNode *current = root;
-    DirectoryNode *parent = NULL;
     UndoInfo undo_info = {NULL, 0, NULL};
     int total_nodes = get_total_nodes(current->subdirs) + (show_files ? get_total_nodes(current->files) : 0);
     int directories_per_page = terminal_height - 4;
@@ -319,14 +318,29 @@ void navigate_directory(DirectoryNode *root)
         case '\n':
         {
             DirectoryNode *node = get_node_at_index(current, selected_index, show_files);
-            if (node && node->subdirs != NULL)
+            if (node && (node->files != NULL || node->subdirs != NULL))
             {
-                parent = current;
                 current = node;
                 total_nodes = get_total_nodes(current->subdirs) + (show_files ? get_total_nodes(current->files) : 0);
                 total_pages = (total_nodes + directories_per_page - 1) / directories_per_page;
                 page = 1;
                 selected_index = 1;
+            }
+            else
+            {
+                int info_height = 5;
+                int info_width = strlen(strrchr(node->path, '/') ? strrchr(node->path, '/') + 1 : node->path) > 50 ? strlen(strrchr(node->path, '/') ? strrchr(node->path, '/') + 1 : node->path) : 50;
+                int info_y = (terminal_height - info_height) / 2;
+                int info_x = (terminal_width - info_width) / 2;
+
+                WINDOW *debugging_win = newwin(info_height, info_width, info_y, info_x);
+                box(debugging_win, 0, 0);
+                mvwprintw(debugging_win, 0, 2, "Cannot open:");
+                mvwprintw(debugging_win, 1, 2, "is either a file or an empty directory");
+                mvwprintw(debugging_win, 3, 2, "file: %s", strrchr(node->path, '/') ? strrchr(node->path, '/') + 1 : node->path);
+                wrefresh(debugging_win);
+                wgetch(debugging_win);
+                delwin(debugging_win);
             }
             break;
         }
@@ -486,7 +500,6 @@ void navigate_directory(DirectoryNode *root)
 
                         if (node)
                         {
-                            parent = current;
                             current = node;
                             total_nodes = get_total_nodes(current->subdirs) + (show_files ? get_total_nodes(current->files) : 0);
                             total_pages = (total_nodes + directories_per_page - 1) / directories_per_page;
