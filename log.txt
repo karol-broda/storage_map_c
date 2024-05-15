@@ -1,0 +1,5 @@
+(lldb) target create "./dir_navigator"
+Current executable set to '/Users/karolbroda/Personal/storage_map_c/dir_navigator' (arm64).
+(lldb) run ..
+Process 10479 launched: '/Users/karolbroda/Personal/storage_map_c/dir_navigator' (arm64)
+(lldb) session save log.txt
