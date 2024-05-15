@@ -559,12 +559,12 @@ void remove_node_from_list(DirectoryNode **head, DirectoryNode *node_to_remove)
 
 void show_debug(const char *debugging)
 {
-    int help_height = 5;
-    int help_width = 60;
-    int help_y = (terminal_height - help_height) / 2;
-    int help_x = (terminal_width - help_width) / 2;
+    int debug_height = 5;
+    int debug_width = 60;
+    int debug_y = (terminal_height - debug_height) / 2;
+    int debug_x = (terminal_width - debug_width) / 2;
 
-    WINDOW *debugging_win = newwin(help_height, help_width, help_y, help_x);
+    WINDOW *debugging_win = newwin(debug_height, debug_width, debug_y, debug_x);
     box(debugging_win, 0, 0);
     mvwprintw(debugging_win, 0, 2, "Debugging Menu:");
     mvwprintw(debugging_win, 1, 2, "debugging info");
