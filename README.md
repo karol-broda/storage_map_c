@@ -84,4 +84,4 @@ This project is licensed under the MIT License.
 
 ---
 
-For questions or contributions, visit the GitHub repository or contact me at your-email@example.com.
+For questions or contributions, visit the GitHub repository or contact me at karol.broda@hotmail.com.
